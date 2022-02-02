@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: TODO List
+  description: Basic operations for todo lists
+  version: 0.1.0
+# servers:
+#   - url: http://api.example.com/v1
+#     description: Optional server description, e.g. Main (production) server
+#   - url: http://staging-api.example.com
+#     description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /todo-list/{list_id}:
+    get:
+      description: Liefert alle Einträge einer Todo-Liste zurück.
+      parameters:
+          name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':    
+          description: JSON-Objekt: Listenobjekt mit Liste aller Einträge
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/List'
+    delete:
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: Löscht eine komplette Todo-Liste mit allen Einträgen.
+      responses:
+        '200':    
+  /todo-list/:
+    post:
+      description: Fügt eine neue Todo-Liste hinzu.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':    
+          description: JSON-Objekt der Todo-Liste mit ID
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/List'
+  /todo-list/{list_id}/entry/:
+    post:
+      description: Fügt einen Eintrag zu einer bestehenden Todo-Liste hinzu.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':    
+          description: JSON-Objekt des Eintrags mit ID
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Entry'
+  /todo-list/{list_id}/entry/{entry_id}:
+    put:
+      description: Aktualisiert einen bestehenden Eintrag.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: entry_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':   
+          description: JSON-Objekt des Eintrags mit ID
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Entry'
+    delete:
+      description: Löscht einen einzelnen Eintrag einer Todo-Liste.
+      responses:
+        '200':    
+  /user:
+    get:
+      description: Liefert eine Liste aller Benutzer zurück.
+      responses:
+        '200':    
+          description: JSON-Objekt: Listenobjekt mit Liste aller Benutzer.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+    post:
+      description: Fügt einen neuen Benutzer hinzu.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':    
+          description: JSON-Objekt des Benutzers mit ID.
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/User'
+  /user/{user_id}:
+    delete:
+      parameters:
+        - name: user_id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: Löscht einen Benutzer.
+      responses:
+        '200':    
+components:
+  schemas:
+    List:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    Entry:
+      type: object
+      properties:
+        id:
+          type: integer
+        content:
+          type: string          
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string          
