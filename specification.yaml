@@ -29,6 +29,8 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/List'
+        '404':
+          description: List not found.                  
     delete:
       parameters:
         - name: list_id
@@ -41,6 +43,9 @@ paths:
       description: Löscht eine komplette Todo-Liste mit allen Einträgen.
       responses:
         '200':    
+          description: List with all entries was deleted.                  
+        '404':
+          description: List not found.                  
   /todo-list/:
     post:
       description: Fügt eine neue Todo-Liste hinzu.
@@ -131,6 +136,9 @@ paths:
       description: Löscht einen einzelnen Eintrag einer Todo-Liste.
       responses:
         '200':    
+          description: Entry was deleted.                  
+        '404':
+          description: Entry not found.                  
   /user:
     get:
       description: Liefert eine Liste aller Benutzer zurück.
@@ -176,6 +184,9 @@ paths:
       description: Löscht einen Benutzer.
       responses:
         '200':    
+          description: User was deleted.                  
+        '404':
+          description: User not found.                  
 components:
   schemas:
     List:
@@ -191,7 +202,9 @@ components:
         id:
           type: integer
         content:
-          type: string          
+          type: string
+        description:
+          type: string
     User:
       type: object
       properties:
