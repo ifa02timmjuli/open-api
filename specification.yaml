@@ -134,6 +134,21 @@ paths:
                   $ref: '#/components/schemas/Entry'
     delete:
       description: Löscht einen einzelnen Eintrag einer Todo-Liste.
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: entry_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':    
           description: Entry was deleted.                  
