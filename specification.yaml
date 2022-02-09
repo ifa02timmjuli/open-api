@@ -13,16 +13,16 @@ paths:
     get:
       description: Liefert alle Einträge einer Todo-Liste zurück.
       parameters:
-          name: list_id
-          in: path
-          description: List ID
-          required: true
-          schema:
-            type: integer
-            format: int64
+          - name: list_id
+            in: path
+            description: List ID
+            required: true
+            schema:
+              type: integer
+              format: int64
       responses:
         '200':    
-          description: JSON-Objekt: Listenobjekt mit Liste aller Einträge
+          description: JSON-Objekt, Listenobjekt mit Liste aller Einträge
           content:
             application/json:
               schema: 
@@ -144,7 +144,7 @@ paths:
       description: Liefert eine Liste aller Benutzer zurück.
       responses:
         '200':    
-          description: JSON-Objekt: Listenobjekt mit Liste aller Benutzer.
+          description: JSON-Objekt, Listenobjekt mit Liste aller Benutzer.
           content:
             application/json:
               schema: 
