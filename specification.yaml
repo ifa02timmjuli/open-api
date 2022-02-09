@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: TODO List
   description: Basic operations for todo lists
-  version: 0.1.0
+  version: 0.9.0
 # servers:
 #   - url: http://api.example.com/v1
 #     description: Optional server description, e.g. Main (production) server
