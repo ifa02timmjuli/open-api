@@ -200,14 +200,14 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         name:
           type: string
     Entry:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         content:
           type: string
         description:
@@ -216,6 +216,6 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         name:
           type: string          
