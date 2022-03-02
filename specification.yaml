@@ -212,6 +212,8 @@ components:
           type: string
         description:
           type: string
+        list_id:
+          type: string
     User:
       type: object
       properties:
