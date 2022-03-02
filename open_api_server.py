@@ -21,10 +21,10 @@ user_id_eve = uuid.uuid4()
 todo_list_1_id = '1318d3d1-d979-47e1-a225-dab1751dbe75'
 todo_list_2_id = '3062dc25-6b80-4315-bb1d-a7c86b014c65'
 todo_list_3_id = '44b02e00-03bc-451d-8d01-0c67ea866fee'
-todo_1_id = uuid.uuid4()
-todo_2_id = uuid.uuid4()
-todo_3_id = uuid.uuid4()
-todo_4_id = uuid.uuid4()
+entry_1_id = uuid.uuid4()
+entry_2_id = uuid.uuid4()
+entry_3_id = uuid.uuid4()
+entry_4_id = uuid.uuid4()
 
 # define internal data structures with example data
 user_list = [
@@ -37,11 +37,11 @@ todo_lists = [
     {'id': todo_list_2_id, 'name': 'Arbeit'},
     {'id': todo_list_3_id, 'name': 'Privat'},
 ]
-todos = [
-    {'id': todo_1_id, 'name': 'Milch', 'description': '', 'list': todo_list_1_id, 'user': user_id_bob},
-    {'id': todo_2_id, 'name': 'Arbeitsblätter ausdrucken', 'description': '', 'list': todo_list_2_id, 'user': user_id_alice},
-    {'id': todo_3_id, 'name': 'Kinokarten kaufen', 'description': '', 'list': todo_list_3_id, 'user': user_id_eve},
-    {'id': todo_3_id, 'name': 'Eier', 'description': '', 'list': todo_list_1_id, 'user': user_id_eve},
+entries = [
+    {'id': entry_1_id, 'name': 'Milch', 'description': '', 'list': todo_list_1_id, 'user': user_id_bob},
+    {'id': entry_2_id, 'name': 'Arbeitsblätter ausdrucken', 'description': '', 'list': todo_list_2_id, 'user': user_id_alice},
+    {'id': entry_3_id, 'name': 'Kinokarten kaufen', 'description': '', 'list': todo_list_3_id, 'user': user_id_eve},
+    {'id': entry_4_id, 'name': 'Eier', 'description': '', 'list': todo_list_1_id, 'user': user_id_eve},
 ]
 
 # add some headers to allow cross origin access to the API on this server, necessary for using preview in Swagger Editor!
@@ -74,7 +74,6 @@ def handle_list(list_id):
         todo_lists.remove(list_item)
         return '', 200
 
-
 # define endpoint for adding a new list
 @app.route('/todo-list', methods=['POST'])
 def add_new_list():
@@ -86,23 +85,41 @@ def add_new_list():
     todo_lists.append(new_list)
     return jsonify(new_list), 200
 
-
 # define endpoint for adding entry to list
 @app.route('/todo-list/<list_id>/entry', methods=['POST'])
 def add_new_entry(list_id):
-    # FIXME
+    # make JSON from POST data (even if content type is not set correctly)
+    new_entry = request.get_json(force=True)
+    print('Got new entry to be added: {}'.format(new_entry))
+    # create id for new entry, save it and return the list with the new entry with id
+    new_entry['id'] = uuid.uuid4()
+    # append to list
+    new_entry['list'] = list_id
+    entries.append(new_entry)
+    return '', 200
 
 # define endpoint to manipulate entry
 @app.route('/todo-list/<list_id>/entry/<entry_id>', methods=['PUT', 'DELETE'])
 def manipulate_entry(list_id, entry_id):
-    # FIXME
+    entry_item = None
+        for l in entries:
+            if l['id'] == entry_id:
+                entry_item = l
+                break
+    if request.method == 'PUT':
+        new_entry_data = request.get_json(force=True)
+        entry_item['name'] = new_entry_data['entry']['name']
+        entry_item['description'] = new_entry_data['entry']['description']
+        return '', 200
+    elif request.method == 'DELETE':
+        entries.remove(entry_item)
+        return '', 200
 
 # define endpoint for adding user and getting list of users
 @app.route('/user', methods=['GET', 'POST'])
 def handle_user():
     # make JSON from POST data (even if content type is not set correctly)
     new_user = request.get_json(force=True)
-
     if request.method == 'POST':
         print('Got new user to be added: {}'.format(new_user))
         new_user['id'] = uuid.uuid4()
@@ -113,8 +130,15 @@ def handle_user():
         
 # define endpoint for adding and getting user
 @app.route('/user/<user_id>', methods=['DELETE'])
-def delete_user():
-    # FIXME
+def delete_user(user_id):
+    user_item = None
+    for l in user_list:
+        if l['id'] == user_id:
+            user_item = l
+            break
+    print('Deleting user...')
+    user.remove(user_item)
+    return '', 200
 
 if __name__ == '__main__':
     # start Flask server
