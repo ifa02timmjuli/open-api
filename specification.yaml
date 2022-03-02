@@ -212,7 +212,7 @@ components:
           type: string
         description:
           type: string
-        list_id:
+        list:
           type: string
     User:
       type: object
